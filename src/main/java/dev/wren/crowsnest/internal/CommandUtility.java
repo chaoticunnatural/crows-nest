@@ -13,7 +13,7 @@ import org.valkyrienskies.core.api.ships.LoadedShip;
 
 import java.util.function.Function;
 
-import static dev.wren.crowsnest.internal.Utility.formatAABB;
+import static dev.wren.crowsnest.internal.FormatUtility.asCommandOutput;
 
 public class CommandUtility {
 
@@ -31,17 +31,8 @@ public class CommandUtility {
 
         Object result = func.apply(ship);
 
-        context.getSource().sendSuccess(() -> TypeFormatterRegistry.format(result), false);
+        context.getSource().sendSuccess(() -> asCommandOutput(name, result) , false);
 
         return Command.SINGLE_SUCCESS;
     }
-
-    public static String format(Object object) {
-        if (object instanceof AABB aabb) { // todo replace with reg
-            return formatAABB(aabb);
-        }
-
-        return String.valueOf(object);
-    }
-
 }
