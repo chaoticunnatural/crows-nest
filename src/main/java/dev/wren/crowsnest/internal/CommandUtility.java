@@ -15,19 +15,6 @@ import static dev.wren.crowsnest.internal.FormatUtility.asCommandOutput;
 
 public class CommandUtility {
 
-    public static <T> LiteralArgumentBuilder<CommandSourceStack> shipNode(String name, Function<LoadedShip, T> func, Class<T> type) {
-        CommandNode<T> node = new CommandNode<>(name, func);
-        node.typeAdapter(type);
-
-        return node.build();
-    }
-
-    public static <T> LiteralArgumentBuilder<CommandSourceStack> branchNode(String name, Function<LoadedShip, T> func, Consumer<CommandNode<T>> consumer) {
-        CommandNode<T> node = new CommandNode<>(name, func).subCommands(consumer);
-
-        return node.build();
-    }
-
     public static int shipHandle(CommandContext<CommandSourceStack> context, Function<LoadedShip, ?> func, String name) {
         LoadedShip ship = Utility.getShipAtPos(context.getSource().getUnsidedLevel(), BlockPosArgument.getBlockPos(context, "pos"));
 

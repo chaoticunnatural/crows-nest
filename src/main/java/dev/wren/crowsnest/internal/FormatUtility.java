@@ -40,7 +40,7 @@ public class FormatUtility {
         return Component.literal(SMALL_FORMAT.format(value));
     }
 
-    public static final MutableComponent SEP = Component.literal(", ").withStyle(ChatFormatting.WHITE);
+    public static final MutableComponent SEP = Component.literal(", ").withStyle(ChatFormatting.RESET);
     public static final MutableComponent NEWLINE = Component.literal("\n");
 
     public static MutableComponent literalWithStyle(String text, ChatFormatting... style) {

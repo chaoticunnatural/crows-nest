@@ -1,5 +1,6 @@
 package dev.wren.crowsnest;
 
+import dev.wren.crowsnest.registries.Operations;
 import dev.wren.crowsnest.registries.TypeBranches;
 import dev.wren.crowsnest.registries.TypeFormatters;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +17,7 @@ public class CrowsNest {
         TypeBranches.registerAdapters();
         TypeBranches.registerBridges();
         TypeFormatters.register();
+        Operations.register();
     }
 
 }

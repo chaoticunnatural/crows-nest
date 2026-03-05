@@ -2,11 +2,14 @@ package dev.wren.crowsnest.registries;
 
 import dev.wren.crowsnest.internal.FormatUtility;
 import dev.wren.crowsnest.internal.reg.TypeFormatterRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import static dev.wren.crowsnest.CrowsNest.LOGGER;
 import static dev.wren.crowsnest.internal.FormatUtility.NEWLINE;
+import static dev.wren.crowsnest.internal.FormatUtility.SEP;
 
 public class TypeFormatters {
 
@@ -25,6 +28,16 @@ public class TypeFormatters {
                 .append(NEWLINE)
                 .append(Component.literal("Volume: "))
                 .append(FormatUtility.formatNumber(aabb.getXsize() * aabb.getYsize() * aabb.getZsize()))
+        );
+
+        TypeFormatterRegistry.registerFormatter(Vec3.class, vec3 ->
+            Component.literal("X: " + vec3.x()).withStyle(ChatFormatting.RED)
+                .append(SEP)
+                .append(Component.literal("Y: " + vec3.y()).withStyle(ChatFormatting.BLUE))
+                .append(SEP)
+                .append(Component.literal("Z: " + vec3.z()).withStyle(ChatFormatting.GREEN))
+                .append(NEWLINE)
+                .append(Component.literal("Length: " + vec3.length()).withStyle(ChatFormatting.YELLOW))
         );
     }
 
