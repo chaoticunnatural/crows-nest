@@ -11,7 +11,7 @@ public class AllCommands {
     public static void registerClient(RegisterClientCommandsEvent event) {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("crowsnest")
             .then(ShipyardToWorldPosCommand.register())
-            .then(ShipInfoCommand.register())
+            .then(DynamicShipInfoCommand.register())
             ;
 
         LiteralCommandNode<CommandSourceStack> rootNode = event.getDispatcher().register(root);

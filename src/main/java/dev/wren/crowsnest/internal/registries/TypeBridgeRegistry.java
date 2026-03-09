@@ -1,6 +1,4 @@
-package dev.wren.crowsnest.internal.reg;
-
-import org.valkyrienskies.core.api.ships.LoadedShip;
+package dev.wren.crowsnest.internal.registries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +21,13 @@ public class TypeBridgeRegistry {
         BRIDGES.put(from, new TypeBridge<>(to, converter));
     }
 
-    public static <T> TypeBridge<T, ?> getBridge(Class<T> type) {
-        return (TypeBridge<T, ?>) BRIDGES.getOrDefault(type, TypeBridge.identity(type));
+    public static <F, T> TypeBridge<F, T> getBridge(Class<F> type) {
+        for (Map.Entry<Class<?>, TypeBridge<?, ?>> entry : BRIDGES.entrySet()) {
+            if (entry.getKey().isAssignableFrom(type)) {
+                return (TypeBridge<F, T>) entry.getValue();
+            }
+        }
+        return (TypeBridge<F, T>) BRIDGES.getOrDefault(type, TypeBridge.identity(type));
     }
 
     public static class TypeBridge<F, T> {
@@ -42,6 +45,10 @@ public class TypeBridgeRegistry {
 
         public T convert(F value) {
             return converter.apply(value);
+        }
+
+        public T safeConvert(Object value) {
+            return converter.apply((F) value);
         }
 
         public static <V> TypeBridge<V, V> identity(Class<V> type) {

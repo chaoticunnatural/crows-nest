@@ -1,4 +1,4 @@
-package dev.wren.crowsnest.internal.reg;
+package dev.wren.crowsnest.internal.registries;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

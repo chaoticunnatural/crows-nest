@@ -1,6 +1,6 @@
 package dev.wren.crowsnest.internal;
 
-import dev.wren.crowsnest.internal.reg.TypeFormatterRegistry;
+import dev.wren.crowsnest.internal.registries.TypeFormatterRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
 public class FormatUtility {
 
     public static MutableComponent asCommandOutput(String name, Object result) {
-        MutableComponent prefix = Component.literal(name + ": ");
+        MutableComponent prefix = Component.literal(name + ": " + result.getClass().getSimpleName() + "\n");
         return prefix.append(TypeFormatterRegistry.format(result));
     }
 

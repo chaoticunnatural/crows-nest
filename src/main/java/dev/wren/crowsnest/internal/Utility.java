@@ -1,5 +1,6 @@
 package dev.wren.crowsnest.internal;
 
+import com.mojang.brigadier.StringReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
@@ -54,5 +55,11 @@ public class Utility {
 
     public static String formatBlockPos(BlockPos pos) {
         return formatAnyPos(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void skipWhitespace(StringReader reader) {
+        while (reader.canRead() && Character.isWhitespace(reader.peek())) {
+            reader.skip();
+        }
     }
 }

@@ -1,7 +1,7 @@
 package dev.wren.crowsnest.registries;
 
 import dev.wren.crowsnest.internal.FormatUtility;
-import dev.wren.crowsnest.internal.reg.TypeFormatterRegistry;
+import dev.wren.crowsnest.internal.registries.TypeFormatterRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.AABB;

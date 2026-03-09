@@ -2,7 +2,6 @@ package dev.wren.crowsnest;
 
 import dev.wren.crowsnest.commands.AllCommands;
 import dev.wren.crowsnest.registries.Operations;
-import dev.wren.crowsnest.registries.TypeAdapters;
 import dev.wren.crowsnest.registries.TypeBridges;
 import dev.wren.crowsnest.registries.TypeFormatters;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
@@ -20,7 +19,6 @@ public class CrowsNest {
 
     public CrowsNest(FMLJavaModLoadingContext context) {
         TypeBridges.register();
-        TypeAdapters.registerAdapters();
         TypeFormatters.register();
         Operations.register();
     }

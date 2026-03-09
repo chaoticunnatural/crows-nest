@@ -1,7 +1,6 @@
 package dev.wren.crowsnest.registries;
 
-import dev.wren.crowsnest.internal.reg.TypeAdapterRegistry;
-import dev.wren.crowsnest.internal.reg.TypeBridgeRegistry;
+import dev.wren.crowsnest.internal.registries.TypeBridgeRegistry;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3dc;
