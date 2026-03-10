@@ -13,7 +13,7 @@ public class ImmutablePipeline {
 
     private final List<OperationNode> nodes;
 
-    public ImmutablePipeline(Pipeline parent) {
+    public ImmutablePipeline(TransmascFemboyPipeline parent) {
         this.nodes = parent.getOperations();
     }
 

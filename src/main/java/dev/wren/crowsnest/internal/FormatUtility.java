@@ -14,14 +14,11 @@ public class FormatUtility {
         return prefix.append(TypeFormatterRegistry.format(result));
     }
 
-    private static final DecimalFormat NORMAL_FORMAT =
-            new DecimalFormat("#,##0.###");
+    private static final DecimalFormat NORMAL_FORMAT = new DecimalFormat("#,##0.###");
 
-    private static final DecimalFormat SMALL_FORMAT =
-            new DecimalFormat("0.#####");
+    private static final DecimalFormat SMALL_FORMAT = new DecimalFormat("0.#####");
 
-    private static final DecimalFormat SCIENTIFIC_FORMAT =
-            new DecimalFormat("0.###E0");
+    private static final DecimalFormat SCIENTIFIC_FORMAT = new DecimalFormat("0.###E0");
 
     public static MutableComponent formatNumber(double value) {
 

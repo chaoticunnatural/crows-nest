@@ -1,6 +1,7 @@
 package dev.wren.crowsnest.internal.pipeline;
 
 import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.wren.crowsnest.internal.argument.ArgumentParser;
 import dev.wren.crowsnest.internal.argument.ArgumentSet;
@@ -8,21 +9,22 @@ import dev.wren.crowsnest.internal.operation.OperationDefinition;
 import dev.wren.crowsnest.internal.operation.OperationNode;
 import dev.wren.crowsnest.internal.registries.OperationRegistry;
 import dev.wren.crowsnest.internal.registries.TypeBridgeRegistry;
+import net.minecraft.commands.CommandSourceStack;
 import org.valkyrienskies.core.api.ships.LoadedShip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Pipeline {
+public class TransmascFemboyPipeline {
 
     private final List<OperationNode> nodes;
 
-    public Pipeline() {
+    public TransmascFemboyPipeline() {
         this.nodes = new ArrayList<>();
     }
 
-    public Pipeline(List<OperationNode> nodes) {
+    public TransmascFemboyPipeline(List<OperationNode> nodes) {
         this.nodes = new ArrayList<>(nodes);
     }
 
@@ -37,7 +39,7 @@ public class Pipeline {
     public Class<?> getCurrentOutputType(Class<?> rootType) {
         Class<?> type = rootType;
         for (OperationNode node : nodes) {
-            OperationDefinition<?, ?, ?> op = node.getOperation();
+            OperationDefinition<?, ?> op = node.operation();
             if (!op.inputType().isAssignableFrom(type)) {
                 throw new IllegalStateException(
                         "Operation " + op.name() + " incompatible with " + type.getSimpleName()
@@ -48,22 +50,22 @@ public class Pipeline {
         return type;
     }
 
-    public static Pipeline parse(String input) throws CommandSyntaxException {
+    public static TransmascFemboyPipeline parse(CommandContext<CommandSourceStack> ctx, String input) throws CommandSyntaxException {
         StringReader reader = new StringReader(input);
-        Pipeline pipeline = new Pipeline();
+        TransmascFemboyPipeline pipeline = new TransmascFemboyPipeline();
         Class<?> currentType = LoadedShip.class;
 
         skipWhitespace(reader);
 
         while (reader.canRead()) {
             String opName = reader.readUnquotedString();
-            OperationDefinition<?, ?, ?> op = OperationRegistry.getPossibleOperations(currentType, opName);
+            OperationDefinition<?, ?> op = OperationRegistry.getOperation(currentType, opName);
             if (op == null) {
                 throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect()
                         .createWithContext(reader, opName);
             }
 
-            ArgumentSet args = ArgumentParser.parseArguments(reader, op.getArgumentDescriptors());
+            ArgumentSet args = ArgumentParser.parseArguments(ctx, op.getArgumentDescriptors());
             pipeline.addOperation(new OperationNode(op, args));
 
             currentType = TypeBridgeRegistry.getBridge(op.returnType()).to();
@@ -74,9 +76,9 @@ public class Pipeline {
     }
 
 
-    public static Pipeline parsePartial(String input) {
+    public static TransmascFemboyPipeline parsePartial(CommandContext<CommandSourceStack> ctx, String input) {
         StringReader reader = new StringReader(input);
-        Pipeline pipeline = new Pipeline();
+        TransmascFemboyPipeline pipeline = new TransmascFemboyPipeline();
         Class<?> currentType = LoadedShip.class;
 
         while (reader.canRead()) {
@@ -84,10 +86,10 @@ public class Pipeline {
             if (!reader.canRead()) break;
 
             String opName = reader.readUnquotedString();
-            OperationDefinition<?, ?, ?> op = OperationRegistry.getOperation(currentType, opName);
+            OperationDefinition<?, ?> op = OperationRegistry.getOperation(currentType, opName);
             if (op == null) break;
 
-            ArgumentSet args = ArgumentParser.parseArguments(reader, op.getArgumentDescriptors());
+            ArgumentSet args = ArgumentParser.parseArguments(ctx, op.getArgumentDescriptors());
             pipeline.addOperation(new OperationNode(op, args));
 
             currentType = TypeBridgeRegistry.getBridge(op.returnType()).to();
@@ -100,5 +102,9 @@ public class Pipeline {
         while (reader.canRead() && Character.isWhitespace(reader.peek())) {
             reader.skip();
         }
+    }
+
+    public ImmutablePipeline immutable() {
+        return new ImmutablePipeline(this);
     }
 }
