@@ -2,6 +2,9 @@ package dev.wren.crowsnest.internal.pipeline;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.minecraft.network.chat.Component;
 import org.valkyrienskies.core.api.ships.LoadedShip;
 
 import dev.wren.crowsnest.internal.operation.OperationDefinition;
@@ -14,6 +17,8 @@ import java.util.List;
 public class Pipeline {
 
     private final List<OperationDefinition<?, ?>> nodes;
+
+    public static final DynamicCommandExceptionType UNEXPECTED = new DynamicCommandExceptionType(unknown -> Component.literal("Unexpected pipeline operation " + unknown));
 
     public Pipeline() {
         this.nodes = new ArrayList<>();
@@ -37,7 +42,7 @@ public class Pipeline {
         while (reader.canRead()) {
             String opName = reader.nextString();
             OperationDefinition<?, ?> operation = OperationRegistry.getOperation(currentType, opName);
-            if (operation == null) throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect().create(opName);
+            if (operation == null) throw UNEXPECTED.create(opName);
 
             operation.populateArgs(reader);
             pipeline.addOperation(operation);

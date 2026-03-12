@@ -46,16 +46,15 @@ public class DynamicShipInfoCommand {
                             value = TypeBridgeRegistry.getBridge(result.getClass()).convert(result);
                         }
 
-                        // todo replace "result" with command name + operations or smthn
-                        ctx.getSource().sendSuccess(formatOutput("result", value), true);
+                        ctx.getSource().sendSuccess(formatOutput(pipelineText, value), true);
 
                         return 1;
                     })
                 ));
     }
 
-    static Supplier<Component> formatOutput(String name, Object result) {
-        MutableComponent prefix = Component.literal(name + ": " + result.getClass().getSimpleName() + "\n");
+    static Supplier<Component> formatOutput(String pipelineText, Object result) {
+        MutableComponent prefix = Component.literal(pipelineText + ": " + result.getClass().getSimpleName() + "\n");
         return () ->  prefix.append(TypeFormatterRegistry.format(result));
     }
 }
